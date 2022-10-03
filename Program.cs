@@ -8,11 +8,13 @@ namespace Inlämmningsuppgift
         private static bool _mainMenuRunning = true;
         private static bool _shirtMenuRunning = true;
         private static bool _muggMenuRunning = true;
+        private static bool _shoeMenuRunning = true;
 
         private static void Main(string[] args)
         {
             var muggs = new List<Mugg>();
             var shirts = new List<Shirt>();
+            var shoes = new List<Shoe>();
             var menu = new Menu();
 
             while (_mainMenuRunning)
@@ -114,6 +116,54 @@ namespace Inlämmningsuppgift
                                     case ProductMenu.Exit:
                                         {
                                             _muggMenuRunning = false;
+                                        }
+                                        break;
+                                    default:
+                                        break;
+                                }
+                            }
+                            break;
+                        }
+                    case MainMenuChoice.Shoes:
+                        {
+                            var shoeStorage = new JsonStorage<Shoe>("Skor.json");
+
+                            while (_shoeMenuRunning)
+                            {
+                                switch (menu.PrintProductMenu())
+                                {
+                                    case ProductMenu.Generate:
+                                        {
+                                            Console.Write("Hur många skor vill du lägga till?: ");
+                                            int numberOfShoes = int.Parse(Console.ReadLine() ?? "0");
+
+                                            for (int i = 0; i < numberOfShoes; i++)
+                                            {
+                                                var shoe = new Shoe();
+
+                                                Console.WriteLine($"Skriv in namnet för tröjan nmr {i + 1}");
+                                                shoe.Sku = Console.ReadLine() ?? "";
+                                                Console.WriteLine($"Skriv in beskrvingen för tröja nmr {i + 1}");
+                                                shoe.Title = Console.ReadLine() ?? "";
+
+                                                shoes.Add(shoe);
+                                            }
+
+                                            shoeStorage.Save(shoes);
+                                        }
+                                        break;
+                                    case ProductMenu.Show:
+                                        {
+                                            Console.WriteLine("Sku\tTitle");
+                                            foreach (var shoe in shoeStorage.Load())
+                                            {
+                                                Console.WriteLine($"{shoe.Sku}\t{shoe.Title}");
+                                            }
+                                        }
+                                        break;
+                                    case ProductMenu.Exit:
+                                        {
+                                            _shoeMenuRunning = false;
                                         }
                                         break;
                                     default:
