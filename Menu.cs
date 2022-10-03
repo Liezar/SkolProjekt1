@@ -1,10 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace Inlämmningsuppgift
+﻿namespace Inlämmningsuppgift
 {
     public enum MainMenuChoice
     {
@@ -13,7 +7,7 @@ namespace Inlämmningsuppgift
         Exit
     }
 
-    public enum ShirtMenu
+    public enum ProductMenu
     {
         Generate = 1,
         Show,
@@ -37,18 +31,18 @@ namespace Inlämmningsuppgift
             return (MainMenuChoice)mainMenuChoice;
         }
 
-        public ShirtMenu PrintShirtMenu()
+        public ProductMenu PrintProductMenu()
         {
-            Console.WriteLine("1: Generate shirts");
-            Console.WriteLine("2: Show shirts");
+            Console.WriteLine("1: Generate product");
+            Console.WriteLine("2: Show products");
             Console.WriteLine("3: Exit");
 
-            if (!int.TryParse(Console.ReadLine(), out int shirtMenuChoice))
+            if (!int.TryParse(Console.ReadLine(), out int prodcutMenuChoice))
             {
                 Console.WriteLine("Endast siffror!");
             }
 
-            return (ShirtMenu)shirtMenuChoice;
+            return (ProductMenu)prodcutMenuChoice;
         }
     }
 }

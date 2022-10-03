@@ -1,33 +1,33 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Drawing;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using System.Xml.Linq;
-using System.Text.Json;
-using Newtonsoft.Json.Schema;
-using System.Xml;
-using Inlämmningsuppgift;
+﻿using System.Text.Json;
 
 namespace SkolProjekt1
 {
-    public class JsonStorage
+    public class JsonStorage<T> where T : class
     {
-        public string FilePath = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.UserProfile) + "/ShirtJson.json");
+        private readonly string _filePath;
 
-        public void Save(List<Shirt> obj)
+        public JsonStorage(string fileName)
+        {
+            _filePath = File.ReadAllText(Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.UserProfile) + "/" + fileName));
+        }
+
+        public void Save(List<T> obj)
         {
             dynamic json = JsonSerializer.Serialize(obj, new JsonSerializerOptions { WriteIndented = true });
 
-            File.AppendAllText(FilePath, json);
+            File.AppendAllText(_filePath, json);
         }
 
-        public List<Shirt> Load()
+        public List<T> Load()
         {
-            var shirtDataFile = File.ReadAllText(FilePath);
-
-            return JsonSerializer.Deserialize<List<Shirt>>(shirtDataFile);
+            if (!File.Exists(_filePath))
+            {
+                File.Create(_filePath);
+            }
+         
+            var dataFile = File.ReadAllText(_filePath);
+            
+            return JsonSerializer.Deserialize<List<T>>(dataFile) ?? new List<T>();
         }
     }
 }
