@@ -46,22 +46,12 @@ namespace Inlämmningsuppgift
                                                 shirts.Add(shirt);
                                             }
 
-                                            jsonStorage.SaveToFile(shirts);
+                                            jsonStorage.Save(shirts);
                                         }
                                         break;
                                     case ShirtMenu.Show:
                                         {
-                                            var shirtDataFile = File.ReadAllText(jsonStorage.FilePath);
-
-                                            List<Shirt> shirts = JsonSerializer.Deserialize<List<Shirt>>(shirtDataFile);
-
-                                            if(shirts != null)
-                                            {
-                                                foreach (var shirt in shirts)
-                                                {
-                                                    Console.WriteLine($"{shirt.Name} {shirt.Color} {shirt.Size}");
-                                                }
-                                            }
+                                            jsonStorage.Load();
                                         }
                                         break;
                                     case ShirtMenu.Exit:
