@@ -23,20 +23,11 @@ namespace SkolProjekt1
             File.AppendAllText(FilePath, json);
         }
 
-        public void Load()
+        public List<Shirt> Load()
         {
             var shirtDataFile = File.ReadAllText(FilePath);
 
-            List<Shirt> shirts = JsonSerializer.Deserialize<List<Shirt>>(shirtDataFile);
-
-            if (shirts != null)
-            {
-                foreach (var shirt in shirts)
-                {
-                    Console.WriteLine($"{shirt.Name} {shirt.Color} {shirt.Size}");
-                }
-            }
+            return JsonSerializer.Deserialize<List<Shirt>>(shirtDataFile);
         }
-
     }
 }

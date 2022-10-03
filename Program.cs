@@ -51,7 +51,11 @@ namespace Inlämmningsuppgift
                                         break;
                                     case ShirtMenu.Show:
                                         {
-                                            jsonStorage.Load();
+                                            Console.WriteLine("Namn\tFärg\tStorlek");
+                                            foreach (var shirt in jsonStorage.Load())
+                                            {
+                                                Console.WriteLine($"{shirt.Name}\t{shirt.Color}\t{shirt.Size}");
+                                            }
                                         }
                                         break;
                                     case ShirtMenu.Exit:
