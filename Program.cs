@@ -8,8 +8,11 @@ namespace Inlämmningsuppgift
         private static bool _mainMenuRunning = true;
         private static bool _shirtMenuRunning = true;
         private static bool _muggMenuRunning = true;
+
         private static void Main(string[] args)
         {
+            var muggs = new List<Mugg>();
+            var shirts = new List<Shirt>();
             var menu = new Menu();
 
             while (_mainMenuRunning)
@@ -28,8 +31,6 @@ namespace Inlämmningsuppgift
                                         {
                                             Console.Write("Hur många tröjor vill du lägga till?: ");
                                             int numberOfShirts = int.Parse(Console.ReadLine() ?? "0");
-
-                                            var shirts = new List<Shirt>();
 
                                             for (int i = 0; i < numberOfShirts; i++)
                                             {
@@ -82,19 +83,17 @@ namespace Inlämmningsuppgift
                                             Console.Write("Hur många muggar vill du lägga till?: ");
                                             int numberOfMugs = int.Parse(Console.ReadLine() ?? "0");
 
-                                            var muggs = new List<Mugg>();
-
                                             for (int i = 0; i < numberOfMugs; i++)
                                             {
                                                 var mugg = new Mugg();
 
-                                                Console.WriteLine($"Skriv in namnet för mugg nmr {i + 1}");
+                                                Console.WriteLine($"Skriv in motivet för mugg nmr {i + 1}");
                                                 mugg.Motive = Console.ReadLine() ?? "";
-                                                Console.WriteLine($"Skriv in beskrvingen för mugg nmr {i + 1}");
+                                                Console.WriteLine($"Skriv in priset för mugg nmr {i + 1}");
                                                 mugg.Price = float.Parse(Console.ReadLine() ?? "0");
-                                                Console.WriteLine($"Skriv in färgen för mugg nmr {i + 1}");
+                                                Console.WriteLine($"Skriv in betyget för mugg nmr {i + 1}");
                                                 mugg.Rating = float.Parse(Console.ReadLine() ?? "0");
-                                                Console.WriteLine($"Skriv in storleken för mugg nmr {i + 1}");
+                                                Console.WriteLine($"Skriv in typen för mugg nmr {i + 1}");
                                                 mugg.Type = Console.ReadLine() ?? "";
 
                                                 muggs.Add(mugg);
@@ -105,7 +104,7 @@ namespace Inlämmningsuppgift
                                         break;
                                     case ProductMenu.Show:
                                         {
-                                            Console.WriteLine("Namn\tFärg\tStorlek");
+                                            Console.WriteLine("Motiv\tTyp\tPris\tBetyg");
                                             foreach (var mugg in muggStorage.Load())
                                             {
                                                 Console.WriteLine($"{mugg.Motive}\t{mugg.Type}\t{mugg.Price}\t{mugg.Rating}");
@@ -134,7 +133,6 @@ namespace Inlämmningsuppgift
                         }
                 }
             }
-
         }
     }
 }
