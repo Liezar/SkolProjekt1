@@ -1,4 +1,7 @@
-﻿namespace Inlämmningsuppgift
+﻿using System.Text.Json;
+using SkolProjekt1;
+
+namespace Inlämmningsuppgift
 {
     internal class Program
     {
@@ -8,6 +11,7 @@
         private static void Main(string[] args)
         {
             var menu = new Menu();
+            var jsonStorage = new JsonStorage();
 
             while (_mainMenuRunning == true)
             {
@@ -21,12 +25,43 @@
                                 {
                                     case ShirtMenu.Generate:
                                         {
+                                            Console.Write("Hur många tröjor vill du lägga till?: ");
+                                            int numberOfShirts = int.Parse(Console.ReadLine());
 
+                                            var shirts = new List<Shirt>();
+
+                                            for (int i = 0; i < numberOfShirts; i++)
+                                            {
+                                                var shirt = new Shirt();
+
+                                                Console.WriteLine($"Skriv in namnet för tröjan nmr {i + 1}");
+                                                shirt.Name = Console.ReadLine();
+                                                Console.WriteLine($"Skriv in beskrvingen för tröja nmr {i + 1}");
+                                                shirt.Description = Console.ReadLine();
+                                                Console.WriteLine($"Skriv in färgen för tröja nmr {i + 1}");
+                                                shirt.Color = Console.ReadLine();
+                                                Console.WriteLine($"Skriv in storleken för tröja nmr {i + 1}");
+                                                shirt.Size = Console.ReadLine();
+
+                                                shirts.Add(shirt);
+                                            }
+
+                                            jsonStorage.SaveToFile(shirts);
                                         }
                                         break;
                                     case ShirtMenu.Show:
                                         {
+                                            var shirtDataFile = File.ReadAllText(jsonStorage.FilePath);
 
+                                            List<Shirt> shirts = JsonSerializer.Deserialize<List<Shirt>>(shirtDataFile);
+
+                                            if(shirts != null)
+                                            {
+                                                foreach (var shirt in shirts)
+                                                {
+                                                    Console.WriteLine($"{shirt.Name} {shirt.Color} {shirt.Size}");
+                                                }
+                                            }
                                         }
                                         break;
                                     case ShirtMenu.Exit:
