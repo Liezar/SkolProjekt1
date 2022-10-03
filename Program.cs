@@ -47,13 +47,13 @@ namespace Inlämmningsuppgift
                                                 shirts.Add(shirt);
                                             }
 
-                                            shirtStorage.Save(shirts);
+                                            Save<Shirt>(shirtStorage, shirts);
                                         }
                                         break;
                                     case ProductMenu.Show:
                                         {
                                             Console.WriteLine("Namn\tFärg\tStorlek");
-                                            foreach (var shirt in shirtStorage.Load())
+                                            foreach (var shirt in Load<Shirt>(shirtStorage))
                                             {
                                                 Console.WriteLine($"{shirt.Name}\t{shirt.Color}\t{shirt.Size}");
                                             }
@@ -88,25 +88,25 @@ namespace Inlämmningsuppgift
                                             {
                                                 var mugg = new Mugg();
 
-                                                Console.WriteLine($"Skriv in namnet för mugg nmr {i + 1}");
+                                                Console.WriteLine($"Skriv in motiv för mugg nmr {i + 1}");
                                                 mugg.Motive = Console.ReadLine() ?? "";
-                                                Console.WriteLine($"Skriv in beskrvingen för mugg nmr {i + 1}");
+                                                Console.WriteLine($"Skriv in pris för mugg nmr {i + 1}");
                                                 mugg.Price = float.Parse(Console.ReadLine() ?? "0");
-                                                Console.WriteLine($"Skriv in färgen för mugg nmr {i + 1}");
+                                                Console.WriteLine($"Skriv in betyg för mugg nmr {i + 1}");
                                                 mugg.Rating = float.Parse(Console.ReadLine() ?? "0");
-                                                Console.WriteLine($"Skriv in storleken för mugg nmr {i + 1}");
+                                                Console.WriteLine($"Skriv in typ för mugg nmr {i + 1}");
                                                 mugg.Type = Console.ReadLine() ?? "";
 
                                                 muggs.Add(mugg);
                                             }
 
-                                            muggStorage.Save(muggs);
+                                            Save<Mugg>(muggStorage, muggs);
                                         }
                                         break;
                                     case ProductMenu.Show:
                                         {
-                                            Console.WriteLine("Namn\tFärg\tStorlek");
-                                            foreach (var mugg in muggStorage.Load())
+                                            Console.WriteLine("Namn\tFärg\tStorlek\tBetyg");
+                                            foreach (var mugg in Load<Mugg>(muggStorage))
                                             {
                                                 Console.WriteLine($"{mugg.Motive}\t{mugg.Type}\t{mugg.Price}\t{mugg.Rating}");
                                             }
@@ -135,6 +135,16 @@ namespace Inlämmningsuppgift
                 }
             }
 
+        }
+
+        public static void Save<T>(IStorage<T> storage, List<T> obj) where T : class
+        {
+            storage.Save(obj);
+        }
+
+        public static List<T> Load<T>(IStorage<T> storage) where T : class
+        {
+            return storage.Load();
         }
     }
 }
