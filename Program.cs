@@ -9,12 +9,14 @@ namespace Inlämmningsuppgift
         private static bool _shirtMenuRunning = true;
         private static bool _muggMenuRunning = true;
         private static bool _shoeMenuRunning = true;
+        private static bool _carMenuRunning = true;
 
         private static void Main(string[] args)
         {
             var muggs = new List<Mugg>();
             var shirts = new List<Shirt>();
             var shoes = new List<Shoe>();
+            var cars = new List<Car>();
             var menu = new Menu();
 
             while (_mainMenuRunning)
@@ -142,9 +144,9 @@ namespace Inlämmningsuppgift
                                                 var shoe = new Shoe();
 
                                                 Console.WriteLine($"Skriv in namnet för tröjan nmr {i + 1}");
-                                                shoe.Sku = Console.ReadLine() ?? "";
+                                                shoe.sku = Console.ReadLine() ?? "";
                                                 Console.WriteLine($"Skriv in beskrvingen för tröja nmr {i + 1}");
-                                                shoe.Title = Console.ReadLine() ?? "";
+                                                shoe.title = Console.ReadLine() ?? "";
 
                                                 shoes.Add(shoe);
                                             }
@@ -157,13 +159,63 @@ namespace Inlämmningsuppgift
                                             Console.WriteLine("Sku\tTitle");
                                             foreach (var shoe in shoeStorage.Load())
                                             {
-                                                Console.WriteLine($"{shoe.Sku}\t{shoe.Title}");
+                                                Console.WriteLine($"{shoe.sku}\t{shoe.title}");
                                             }
                                         }
                                         break;
                                     case ProductMenu.Exit:
                                         {
                                             _shoeMenuRunning = false;
+                                        }
+                                        break;
+                                    default:
+                                        break;
+                                }
+                            }
+                            break;
+                        }
+                    case MainMenuChoice.Cars:
+                        {
+                            var carStorage = new JsonStorage<Car>("Cars.json");
+
+                            while (_carMenuRunning)
+                            {
+                                switch (menu.PrintProductMenu())
+                                {
+                                    case ProductMenu.Generate:
+                                        {
+                                            Console.Write("Hur många bilar vill du lägga till?: ");
+                                            int numberOfCars = int.Parse(Console.ReadLine() ?? "0");
+
+                                            for (int i = 0; i < numberOfCars; i++)
+                                            {
+                                                var car = new Car();
+
+                                                Console.WriteLine($"Skriv in modelen för bil nmr {i + 1}");
+                                                car.Model = Console.ReadLine() ?? "";
+                                                Console.WriteLine($"Skriv in årtalet för bil nmr {i + 1}");
+                                                car.Year = int.Parse(Console.ReadLine() ?? "0");
+                                                Console.WriteLine($"Skriv in märket för bil nmr {i + 1}");
+                                                car.Brand = Console.ReadLine() ?? "";
+
+                                                cars.Add(car);
+                                            }
+
+                                            carStorage.Save(cars);
+                                        }
+                                        break;
+                                    case ProductMenu.Show:
+                                        {
+                                            Console.WriteLine("Model\tYear\tBrand");
+                                            foreach (var car in carStorage.Load())
+                                            {
+                                                Console.WriteLine($"{car.Model}\t{car.Year}\t{car.Brand}");
+                                            }
+                                        }
+                                        break;
+                                    case ProductMenu.Exit:
+                                        {
+                                            _carMenuRunning = false;
                                         }
                                         break;
                                     default:

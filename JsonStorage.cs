@@ -34,7 +34,10 @@ namespace SkolProjekt1
                 return new List<T>();
             }
             
-            return JsonSerializer.Deserialize<List<T>>(dataFile) ?? new List<T>();
+            return JsonSerializer.Deserialize<List<T>>(dataFile, new JsonSerializerOptions()
+            {
+                PropertyNameCaseInsensitive = true,
+            }) ?? new List<T>();
         }
     }
 }

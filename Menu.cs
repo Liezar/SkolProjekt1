@@ -5,6 +5,7 @@
         Shirts = 1,
         Mugs,
         Shoes,
+        Cars,
         Exit
     }
 
@@ -23,7 +24,8 @@
             Console.WriteLine("1: Shirts");
             Console.WriteLine("2: Mugs");
             Console.WriteLine("3: Shoes");
-            Console.WriteLine("4: Exit");
+            Console.WriteLine("4: Cars");
+            Console.WriteLine("5: Exit");
 
             if (!int.TryParse(Console.ReadLine(), out int mainMenuChoice))
             {

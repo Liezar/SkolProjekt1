@@ -6,9 +6,10 @@ using System.Threading.Tasks;
 
 namespace SkolProjekt1
 {
-    public class Shoe
+    public class Car
     {
-        public string sku { get; set; }
-        public string title { get; set; }
+        public string Model { get; set; } = "";
+        public int Year { get; set; }
+        public string Brand { get; set; } = "";
     }
 }
