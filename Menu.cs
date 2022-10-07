@@ -1,11 +1,11 @@
-﻿namespace Inlämmningsuppgift
+﻿using SkolProjekt1;
+
+namespace Inlämmningsuppgift
 {
     public enum MainMenuChoice
     {
         Shirts = 1,
         Mugs,
-        Shoes,
-        Cars,
         Exit
     }
 
@@ -20,18 +20,20 @@
     {
         public MainMenuChoice PrintMainMenu()
         {
+            Console.WriteLine("Kom och hälsa på! Vi befinner oss på: Intressantgatan 10");
+            Console.WriteLine("Fakturaaddress: Intressantgatan 13\n");
+
             Console.WriteLine("Welcome!");
             Console.WriteLine("1: Shirts");
             Console.WriteLine("2: Mugs");
-            Console.WriteLine("3: Shoes");
-            Console.WriteLine("4: Cars");
-            Console.WriteLine("5: Exit");
+            Console.WriteLine("3: Exit");
 
             if (!int.TryParse(Console.ReadLine(), out int mainMenuChoice))
             {
                 Console.WriteLine("Endast siffror!");
             }
 
+            Console.Clear();
             return (MainMenuChoice)mainMenuChoice;
         }
 
@@ -46,6 +48,7 @@
                 Console.WriteLine("Endast siffror!");
             }
 
+            Console.Clear();
             return (ProductMenu)prodcutMenuChoice;
         }
     }

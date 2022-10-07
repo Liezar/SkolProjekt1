@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace SkolProjekt1
 {
-    public class Mugg
+    public class Mug
     {
         public string Motive { get; set; } = "";
         public string Type { get; set; } = "";
