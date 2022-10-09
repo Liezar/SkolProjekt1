@@ -6,10 +6,18 @@ namespace Inlämmningsuppgift
     {
         Shirts = 1,
         Mugs,
+        Settings,
         Exit
     }
 
-    public enum ProductMenu
+    public enum SettingChoice
+    {
+        Plain = 1,
+        Json,
+        Exit
+    }
+
+    public enum ProductChoice
     {
         Generate = 1,
         Show,
@@ -26,7 +34,8 @@ namespace Inlämmningsuppgift
             Console.WriteLine("Welcome!");
             Console.WriteLine("1: Shirts");
             Console.WriteLine("2: Mugs");
-            Console.WriteLine("3: Exit");
+            Console.WriteLine("3: Settings");
+            Console.WriteLine("4: Exit");
 
             if (!int.TryParse(Console.ReadLine(), out int mainMenuChoice))
             {
@@ -37,7 +46,23 @@ namespace Inlämmningsuppgift
             return (MainMenuChoice)mainMenuChoice;
         }
 
-        public ProductMenu PrintProductMenu()
+        public SettingChoice PrintSettingsMenu()
+        {
+            Console.WriteLine("Nu visas de olika sparalternativen:\nJSON sparar all data i JSON format\nPLAIN sparar allting i ett eget format där allt separeras med #\n");
+            Console.WriteLine("1: Plain");
+            Console.WriteLine("2: Json");
+            Console.WriteLine("3: Exit");
+
+            if (!int.TryParse(Console.ReadLine(), out int settingMenuChoice))
+            {
+                Console.WriteLine("Endast siffror!");
+            }
+
+            Console.Clear();
+            return (SettingChoice)settingMenuChoice;
+        }
+
+        public ProductChoice PrintProductMenu()
         {
             Console.WriteLine("1: Generate product");
             Console.WriteLine("2: Show products");
@@ -49,7 +74,7 @@ namespace Inlämmningsuppgift
             }
 
             Console.Clear();
-            return (ProductMenu)prodcutMenuChoice;
+            return (ProductChoice)prodcutMenuChoice;
         }
     }
 }

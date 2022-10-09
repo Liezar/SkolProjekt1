@@ -9,17 +9,20 @@ namespace Inlämmningsuppgift
         private static void Main(string[] args)
         {
             bool _mainMenuRunning = true;
+            int _saveChoice = 0;
 
             while (_mainMenuRunning)
             {
                 var menu = new Menu();
+                var RandomGenerator = new RandomGenerator();
+
                 switch (menu.PrintMainMenu())
                 {
                     case MainMenuChoice.Shirts:
                         {
                             bool _shirtMenuRunning = true;
 
-                            var shirtStorage = new JsonStorage<Shirt>("Test.json");
+                            var jsonStorage = new JsonStorage<Shirt>("Test.json");
                             var plainStorage = new PlainStorage.PlainStorage("ShirtsPlain.txt");
                             var shirts = new List<Shirt>();
                             
@@ -27,43 +30,54 @@ namespace Inlämmningsuppgift
                             {
                                 switch (menu.PrintProductMenu())
                                 {
-                                    case ProductMenu.Generate:
+                                    case ProductChoice.Generate:
                                         {
                                             Console.Write("Hur många tröjor vill du lägga till?: ");
                                             int numberOfShirts = int.Parse(Console.ReadLine() ?? "0");
 
+                                            Random random = new Random();
+
                                             for (int i = 0; i < numberOfShirts; i++)
                                             {
-                                                var shirt = new Shirt();
-
-                                                Console.WriteLine($"Skriv in motivet för tröjan nmr {i + 1}");
-                                                shirt.Motive = Console.ReadLine() ?? "";
-                                                Console.WriteLine($"Skriv in material för tröja nmr {i + 1}");
-                                                shirt.Material = Console.ReadLine() ?? "";
-                                                Console.WriteLine($"Skriv in betyget för tröja nmr {i + 1}");
-                                                shirt.Rating = Console.ReadLine() ?? "";
-                                                Console.WriteLine($"Skriv in priset för tröja nmr {i + 1}");
-                                                shirt.Price = Console.ReadLine() ?? "";
-                                                Console.WriteLine($"Skriv in storleken för tröja nmr {i + 1}");
-                                                shirt.Size = Console.ReadLine() ?? "";
+                                                var shirt = new Shirt
+                                                {
+                                                    Motive = RandomGenerator.Motive(),
+                                                    Material = RandomGenerator.Material(),
+                                                    Size = RandomGenerator.Size(),
+                                                    Price = RandomGenerator.Price(),
+                                                    Rating = RandomGenerator.Rating()
+                                                };
 
                                                 shirts.Add(shirt);
                                             }
-                                            //shirtStorage.Save(shirts);
-                                            plainStorage.Save(shirts);
-                                        }
-                                        break;
-                                    case ProductMenu.Show:
-                                        {
-                                            Console.WriteLine("Motiv\tMaterial\tStorlek\t\tPriset\t\tBetyg");
-                                            //foreach (var shirt in shirtStorage.Load().OrderByDescending(o => o.Rating))
-                                            foreach (var shirt in plainStorage.Load().OrderByDescending(o => o.Rating))
+
+                                            if (_saveChoice == 1)
                                             {
-                                                Console.WriteLine($"\n{shirt.Motive.ToUpper()}\t{shirt.Material.ToUpper()}\t\t{shirt.Size.ToUpper()}\t\t{shirt.Price.ToUpper()}\t\t{shirt.Rating.ToUpper()}");
+                                                plainStorage.SaveShirt(shirts);
+                                                Console.WriteLine("Nu sparas det i PLAIN format");
+                                            }
+                                            else if (_saveChoice == 2)
+                                            {
+                                                jsonStorage.Save(shirts);
+                                                Console.WriteLine("Nu sparas det i JSON format");
                                             }
                                         }
                                         break;
-                                    case ProductMenu.Exit:
+                                    case ProductChoice.Show:
+                                        {
+                                            const int alignment = -13;
+                                            Console.WriteLine("Här är våra t-shirts:\n");
+                                            Console.WriteLine($"{"Motive", alignment}{"Material",alignment}{"Size",alignment}{"Price",alignment}{"Rating",alignment}\n");
+
+                                            foreach (var shirt in jsonStorage.Load().OrderByDescending(o => o.Rating))
+                                            {
+                                                Console.WriteLine($"{shirt.Motive, alignment}{shirt.Material, alignment}{shirt.Size, alignment}{shirt.Price,alignment}{shirt.Rating,alignment}");
+                                            }
+
+                                            Console.WriteLine("");
+                                        }
+                                        break;
+                                    case ProductChoice.Exit:
                                         {
                                             _shirtMenuRunning = false;
                                         }
@@ -78,51 +92,93 @@ namespace Inlämmningsuppgift
                         {
                             bool _mugMenuRunning = true;
 
-                            var mugStorage = new JsonStorage<Mug>("Muggar.txt");
+                            var jsonStorage = new JsonStorage<Mug>("Muggar.json");
+                            var plainStorage = new PlainStorage.PlainStorage("MuggarPlain.txt");
                             var mugs = new List<Mug>();
 
                             while (_mugMenuRunning)
                             {
                                 switch (menu.PrintProductMenu())
                                 {
-                                    case ProductMenu.Generate:
+                                    case ProductChoice.Generate:
                                         {
                                             Console.Write("Hur många muggar vill du lägga till?: ");
                                             int numberOfMugs = int.Parse(Console.ReadLine() ?? "0");
 
                                             for (int i = 0; i < numberOfMugs; i++)
                                             {
-                                                var mug = new Mug();
-
-                                                Console.WriteLine($"Skriv in motivet för mugg nmr {i + 1}");
-                                                mug.Motive = Console.ReadLine() ?? "";
-                                                Console.WriteLine($"Skriv in priset för mugg nmr {i + 1}");
-                                                mug.Price = float.Parse(Console.ReadLine() ?? "0");
-                                                Console.WriteLine($"Skriv in betyget för mugg nmr {i + 1}");
-                                                mug.Rating = float.Parse(Console.ReadLine() ?? "0");
-                                                Console.WriteLine($"Skriv in typen för mugg nmr {i + 1}");
-                                                mug.Type = Console.ReadLine() ?? "";
+                                                var mug = new Mug
+                                                {
+                                                    Motive = RandomGenerator.Motive(),
+                                                    Price = RandomGenerator.Price(),
+                                                    Rating = RandomGenerator.Rating(),
+                                                    Type = RandomGenerator.MugType()
+                                                };
 
                                                 mugs.Add(mug);
                                             }
-                                            List<Mug> SortedList = mugs.OrderBy(o => o.Rating).ToList();
-                                            mugStorage.Save(SortedList);
-                                        }
-                                        break;
-                                    case ProductMenu.Show:
-                                        {
-                                            Console.WriteLine("Motiv\tTyp\tPris\tBetyg");
-                                            foreach (var mug in mugStorage.Load().OrderBy(o => o.Rating))
+
+                                            if (_saveChoice == 1)
                                             {
-                                                Console.WriteLine($"{mug.Motive}\t{mug.Type}\t{mug.Price}\t{mug.Rating}");
+                                                plainStorage.SaveMug(mugs);
+                                                Console.WriteLine("Nu sparas det i PLAIN format");
+                                            }
+                                            else if (_saveChoice == 2)
+                                            {
+                                                jsonStorage.Save(mugs);
+                                                Console.WriteLine("Nu sparas det i JSON format");
                                             }
                                         }
                                         break;
-                                    case ProductMenu.Exit:
+                                    case ProductChoice.Show:
+                                        {
+                                            const int alignment = -13;
+                                            Console.WriteLine("Här är våra muggar:\n");
+                                            Console.WriteLine($"{"Motive",alignment}{"Type",alignment}{"Price",alignment}{"Rating",alignment}\n");
+
+                                            foreach (var shirt in plainStorage.ShirtLoad().OrderByDescending(o => o.Rating))
+                                            {
+                                                Console.WriteLine($"{shirt.Motive,alignment}{shirt.Material,alignment}{shirt.Size,alignment}{shirt.Price,alignment}{shirt.Rating,alignment}");
+                                            }
+
+                                            Console.WriteLine("");
+                                        }
+                                        break;
+                                    case ProductChoice.Exit:
                                         {
                                             _mugMenuRunning = false;
                                         }
                                         break;
+                                    default:
+                                        break;
+                                }
+                            }
+                            break;
+                        }
+                    case MainMenuChoice.Settings:
+                        {
+                            bool _settingsMenu = true;
+                            while (_settingsMenu)
+                            {
+                                switch (menu.PrintSettingsMenu())
+                                {
+                                    case SettingChoice.Plain:
+                                        {
+                                            _saveChoice = 1;
+                                            _settingsMenu = false;
+                                            break;
+                                        }
+                                    case SettingChoice.Json:
+                                        {
+                                            _saveChoice = 2;
+                                            _settingsMenu = false;
+                                            break;
+                                        }
+                                    case SettingChoice.Exit:
+                                        {
+                                            _settingsMenu = false;
+                                            break;
+                                        }
                                     default:
                                         break;
                                 }
