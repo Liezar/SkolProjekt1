@@ -9,9 +9,9 @@ namespace SkolProjekt1
 {
     public class RandomGenerator
     {
-        private string FileGenerator(string fileName)
+        private static string FileGenerator(string fileName)
         {
-            var filePath = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.UserProfile) + "/" + fileName);
+            var filePath = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.UserProfile) + "/ProductData/" + fileName);
 
             if (!File.Exists(filePath))
             {
@@ -21,54 +21,52 @@ namespace SkolProjekt1
             return filePath;
         }
             
-        public string Splitter(string fileName)
+        public static string Splitter(string fileName)
         {
             var items = File.ReadAllLines(FileGenerator(fileName));
             string[] splitter;
             Random random = new Random();
             splitter = new string[items.Length];
-
             foreach (var item in items)
             {
                 splitter = item.Split("#");
             }
-
             return splitter[random.Next(splitter.Length)].ToString();
         }
 
-        public string Motive()
+        public static string Motive()
         {
             return Splitter("Motiv.txt");
         }
 
-        public string Material()
+        public static string Material()
         {
             return Splitter("Material.txt");
         }
 
-        public string Size()
+        public static string Size()
         {
             return Splitter("Storlekar.txt");
         }
 
-        public string Price()
+        public static string Price()
         {
             return Splitter("Priser.txt");
         }
 
-        public string MugType()
+        public static string MugType()
         {
             return Splitter("MuggTyper.txt");
         }
 
         public static string Rating()
         {
-            Random random = new Random();
+            var random = new Random();
 
-            double d = random.NextDouble();
-            decimal d1 = Convert.ToDecimal(d * random.Next(1, 10));
-            d1 = Math.Round(d1, 1);
-            return d1.ToString();
+            double randomDouble = random.NextDouble();
+            decimal rating = Convert.ToDecimal(randomDouble * random.Next(1, 10));
+            rating = Math.Round(rating, 1);
+            return rating.ToString();
         }
     }
 }

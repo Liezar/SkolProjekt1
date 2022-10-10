@@ -9,12 +9,13 @@ namespace Inlämmningsuppgift
         private static void Main(string[] args)
         {
             bool _mainMenuRunning = true;
-            int _saveChoice = 0;
 
             while (_mainMenuRunning)
             {
                 var menu = new Menu();
                 var RandomGenerator = new RandomGenerator();
+                var printProducts = new PrintProductGeneration();
+                int _saveChoice = 1;
 
                 switch (menu.PrintMainMenu())
                 {
@@ -54,12 +55,12 @@ namespace Inlämmningsuppgift
                                             if (_saveChoice == 1)
                                             {
                                                 plainStorage.SaveShirt(shirts);
-                                                Console.WriteLine("Nu sparas det i PLAIN format");
+                                                Console.WriteLine("Sparat i Plain");
                                             }
                                             else if (_saveChoice == 2)
                                             {
                                                 jsonStorage.Save(shirts);
-                                                Console.WriteLine("Nu sparas det i JSON format");
+                                                Console.WriteLine("Sparat i Json");
                                             }
                                         }
                                         break;
@@ -69,7 +70,7 @@ namespace Inlämmningsuppgift
                                             Console.WriteLine("Här är våra t-shirts:\n");
                                             Console.WriteLine($"{"Motive", alignment}{"Material",alignment}{"Size",alignment}{"Price",alignment}{"Rating",alignment}\n");
 
-                                            foreach (var shirt in jsonStorage.Load().OrderByDescending(o => o.Rating))
+                                            foreach (var shirt in plainStorage.ShirtLoad().OrderByDescending(o => o.Rating))
                                             {
                                                 Console.WriteLine($"{shirt.Motive, alignment}{shirt.Material, alignment}{shirt.Size, alignment}{shirt.Price,alignment}{shirt.Rating,alignment}");
                                             }
@@ -109,24 +110,23 @@ namespace Inlämmningsuppgift
                                             {
                                                 var mug = new Mug
                                                 {
-                                                    Motive = RandomGenerator.Motive(),
+                                                    Motive = SkolProjekt1.RandomGenerator.Motive(),
                                                     Price = RandomGenerator.Price(),
                                                     Rating = RandomGenerator.Rating(),
                                                     Type = RandomGenerator.MugType()
                                                 };
-
                                                 mugs.Add(mug);
                                             }
 
                                             if (_saveChoice == 1)
                                             {
                                                 plainStorage.SaveMug(mugs);
-                                                Console.WriteLine("Nu sparas det i PLAIN format");
+                                                Console.WriteLine("Sparat i Plain");
                                             }
                                             else if (_saveChoice == 2)
                                             {
                                                 jsonStorage.Save(mugs);
-                                                Console.WriteLine("Nu sparas det i JSON format");
+                                                Console.WriteLine("Sparat i Json");
                                             }
                                         }
                                         break;
@@ -136,9 +136,9 @@ namespace Inlämmningsuppgift
                                             Console.WriteLine("Här är våra muggar:\n");
                                             Console.WriteLine($"{"Motive",alignment}{"Type",alignment}{"Price",alignment}{"Rating",alignment}\n");
 
-                                            foreach (var shirt in plainStorage.ShirtLoad().OrderByDescending(o => o.Rating))
+                                            foreach (var mug in plainStorage.MugLoad().OrderBy(o => o.Rating))
                                             {
-                                                Console.WriteLine($"{shirt.Motive,alignment}{shirt.Material,alignment}{shirt.Size,alignment}{shirt.Price,alignment}{shirt.Rating,alignment}");
+                                                Console.WriteLine($"{mug.Motive,alignment}{mug.Type, alignment}{mug.Price,alignment}{mug.Rating,alignment}");
                                             }
 
                                             Console.WriteLine("");

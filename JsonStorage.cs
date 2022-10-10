@@ -18,7 +18,7 @@ namespace SkolProjekt1
                 File.Create(filePath);
             }
         }
-
+     
         public void Save(List<T> obj) 
         {
             var objects = Load();
