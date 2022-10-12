@@ -24,7 +24,7 @@ namespace Inlämmningsuppgift
                             bool _shirtMenuRunning = true;
 
                             var jsonStorage = new JsonStorage<Shirt>("Test.json");
-                            var plainStorage = new PlainStorage.PlainStorage("ShirtsPlain.txt");
+                            var plainStorage = new PlainStorage<Shirt>("ShirtsPlain.txt");
                             var shirts = new List<Shirt>();
                             
                             while (_shirtMenuRunning)
@@ -54,7 +54,7 @@ namespace Inlämmningsuppgift
 
                                             if (_saveChoice == 1)
                                             {
-                                                plainStorage.SaveShirt(shirts);
+                                                plainStorage.Save(shirts);
                                                 Console.WriteLine("Sparat i Plain");
                                             }
                                             else if (_saveChoice == 2)
@@ -70,7 +70,7 @@ namespace Inlämmningsuppgift
                                             Console.WriteLine("Här är våra t-shirts:\n");
                                             Console.WriteLine($"{"Motive", alignment}{"Material",alignment}{"Size",alignment}{"Price",alignment}{"Rating",alignment}\n");
 
-                                            foreach (var shirt in plainStorage.ShirtLoad().OrderByDescending(o => o.Rating))
+                                            foreach (var shirt in plainStorage.Load().OrderByDescending(o => o.Rating))
                                             {
                                                 Console.WriteLine($"{shirt.Motive, alignment}{shirt.Material, alignment}{shirt.Size, alignment}{shirt.Price,alignment}{shirt.Rating,alignment}");
                                             }
@@ -94,7 +94,7 @@ namespace Inlämmningsuppgift
                             bool _mugMenuRunning = true;
 
                             var jsonStorage = new JsonStorage<Mug>("Muggar.json");
-                            var plainStorage = new PlainStorage.PlainStorage("MuggarPlain.txt");
+                            var plainStorage = new PlainStorage.PlainStorage<Mug>("MuggarPlain.txt");
                             var mugs = new List<Mug>();
 
                             while (_mugMenuRunning)
@@ -120,7 +120,7 @@ namespace Inlämmningsuppgift
 
                                             if (_saveChoice == 1)
                                             {
-                                                plainStorage.SaveMug(mugs);
+                                                plainStorage.Save(mugs);
                                                 Console.WriteLine("Sparat i Plain");
                                             }
                                             else if (_saveChoice == 2)
@@ -136,7 +136,7 @@ namespace Inlämmningsuppgift
                                             Console.WriteLine("Här är våra muggar:\n");
                                             Console.WriteLine($"{"Motive",alignment}{"Type",alignment}{"Price",alignment}{"Rating",alignment}\n");
 
-                                            foreach (var mug in plainStorage.MugLoad().OrderBy(o => o.Rating))
+                                            foreach (var mug in plainStorage.Load().OrderBy(o => o.Rating))
                                             {
                                                 Console.WriteLine($"{mug.Motive,alignment}{mug.Type, alignment}{mug.Price,alignment}{mug.Rating,alignment}");
                                             }

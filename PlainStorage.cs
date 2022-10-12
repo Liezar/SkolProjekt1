@@ -3,7 +3,7 @@ using SkolProjekt1;
 
 namespace PlainStorage
 {
-    public class PlainStorage
+    public class PlainStorage<T> where T : class, new()
     {
         private readonly string filePath;
         private PrintProductGeneration PrintProductGeneration = new();
@@ -13,110 +13,73 @@ namespace PlainStorage
 
             if (!File.Exists(filePath))
             {
-                File.Create(filePath);
+                var fileStream = File.Create(filePath);
+                fileStream.Close();
             }
         }
 
-        public void SaveShirt(List<Shirt> obj)
+        public void Save(List<T> obj)
         {
-            foreach (var shirt in obj)
+            var rows = "";
+
+            foreach (var row in File.ReadAllLines(filePath))
             {
-                shirt.Motive += "#";
-                shirt.Material += "#";
-                shirt.Size += "#";
-                shirt.Price += "#";
-                shirt.Rating += "#";
-
-                string text = shirt.Motive + shirt.Material + shirt.Size + shirt.Price + shirt.Rating;
-
-                if (File.ReadAllText(filePath) != "")
-                {
-                    File.AppendAllText(filePath, "\n" + text);
-                }
-                else
-                {
-                    File.AppendAllText(filePath, text);
-                }
-                Console.WriteLine(PrintProductGeneration.CreatedProducts(obj.Count));
-                //Console.WriteLine($"Created {count++}/{obj.Count} products");
+                rows += row + Environment.NewLine;
             }
-            obj.Clear();
-        }
-        public void SaveMug(List<Mug> obj)
-        {
-            foreach (var Mug in obj)
+
+            if(rows == "")
             {
-                Mug.Motive += "#";
-                Mug.Type += "#";
-                Mug.Price += "#";
-                Mug.Rating += "#";
+                var headers = "";
 
-                string text = Mug.Motive + Mug.Type + Mug.Price + Mug.Rating;
+                foreach (var property in obj[0].GetType().GetProperties())
+                {
+                    headers += property.Name + "#";
+                }
 
-                if (File.ReadAllText(filePath) != "")
-                {
-                    File.AppendAllText(filePath, "\n" + text);
-                }
-                else
-                {
-                    File.AppendAllText(filePath, text);
-                }
-                Console.WriteLine(PrintProductGeneration.CreatedProducts(obj.Count));
+                headers = headers.TrimEnd('#');
+
+                rows = headers + Environment.NewLine;
             }
-            obj.Clear();
+
+            foreach (var o in obj)
+            {
+                foreach(var property in o.GetType().GetProperties())
+                {
+                    rows += property.GetValue(o) + "#";
+                }
+
+                rows = rows.TrimEnd('#');
+                rows += Environment.NewLine;
+            }
+
+            File.WriteAllText(filePath, rows);
         }
 
-        public List<Shirt> ShirtLoad()
+        public List<T> Load()
         {
+            var products = new List<T>();
             var rows = File.ReadAllLines(filePath);
-            var shirts = new List<Shirt>();
-            var shirtStorage = new List<Shirt>();
+            var p = new T();
+            var properties = p.GetType().GetProperties();
+            var rowIndex = 0;
 
-            if (File.ReadAllText(filePath) != "")
+            foreach(var row in rows)
             {
-                foreach (var row in rows)
+                if (rowIndex++ == 0) continue;
+
+                var product = new T();
+                var columns = row.Split('#');
+                var columnIndex = 0;
+
+                foreach (var property in properties)
                 {
-                    var shirt = new Shirt();
-                    var dataSplitter = row.Split("#");
-
-                    shirt.Motive = dataSplitter[0];
-                    shirt.Material = dataSplitter[1];
-                    shirt.Size = dataSplitter[2];
-                    shirt.Price = dataSplitter[3];
-                    shirt.Rating = dataSplitter[4];
-
-                    shirts.Add(shirt);
+                    product.GetType().GetProperty(property.Name).SetValue(product, columns[columnIndex++]);
                 }
 
-                shirtStorage.AddRange(shirts);
+                products.Add(product);
             }
-            return shirts;
-        }
 
-        public List<Mug> MugLoad()
-        {
-            var rows = File.ReadAllLines(filePath);
-            var mugs = new List<Mug>();
-            var mugStorage = new List<Mug>();
-
-            if (File.ReadAllText(filePath) != "")
-            {
-                foreach (var row in rows)
-                {
-                    var mug = new Mug();
-                    var dataSplitter = row.Split("#");
-
-                    mug.Motive = dataSplitter[0];
-                    mug.Type = dataSplitter[1];
-                    mug.Price = dataSplitter[2];
-                    mug.Rating = dataSplitter[3];
-
-                    mugs.Add(mug);
-                }
-
-                mugStorage.AddRange(mugs);
-            }
-            return mugs;
+            return products;
         }
     }
 }
