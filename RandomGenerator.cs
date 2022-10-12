@@ -9,6 +9,15 @@ namespace SkolProjekt1
 {
     public class RandomGenerator
     {
+        private static Random _random = new Random();
+
+        private static string[]? _items;
+        private static string[]? _motives;
+        private static string[]? _materials;
+        private static string[]? _sizes ;
+        private static string[]? _prices;
+        private static string[]? _types;
+
         private static string FileGenerator(string fileName)
         {
             var filePath = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.UserProfile) + "/ProductData/" + fileName);
@@ -21,17 +30,43 @@ namespace SkolProjekt1
             return filePath;
         }
             
-        public static string Splitter(string fileName)
+        private static string Splitter(string fileName)
         {
-            var items = File.ReadAllLines(FileGenerator(fileName));
-            string[] splitter;
-            Random random = new Random();
-            splitter = new string[items.Length];
-            foreach (var item in items)
+            switch (fileName)
             {
-                splitter = item.Split("#");
+                case "Motiv.txt":
+                    if(_motives == null)
+                    {
+                        _motives = File.ReadAllLines(FileGenerator(fileName));
+                    }
+                    return _motives[_random.Next(_motives.Length)];
+                case "Material.txt":
+                    if(_materials == null)
+                    {
+                        _materials = File.ReadAllLines(FileGenerator(fileName));
+                    }
+                    return _materials[_random.Next(_materials.Length)];
+                case "Storlekar.txt":
+                    if(_sizes == null)
+                    {
+                        _sizes = File.ReadAllLines(FileGenerator(fileName));
+                    }
+                    return _sizes[_random.Next(_sizes.Length)];
+                case "Priser.txt":
+                    if(_prices == null)
+                    {
+                        _prices = File.ReadAllLines(FileGenerator(fileName));
+                    }
+                    return _prices[_random.Next(_prices.Length)];
+                case "MuggTyper.txt":
+                    if(_types == null)
+                    {
+                        _types = File.ReadAllLines(FileGenerator(fileName));
+                    }
+                    return _types[_random.Next(_types.Length)];
+                default:
+                    return "N/A";
             }
-            return splitter[random.Next(splitter.Length)].ToString();
         }
 
         public static string Motive()
@@ -61,10 +96,8 @@ namespace SkolProjekt1
 
         public static string Rating()
         {
-            var random = new Random();
-
-            double randomDouble = random.NextDouble();
-            decimal rating = Convert.ToDecimal(randomDouble * random.Next(1, 10));
+            double randomDouble = _random.NextDouble();
+            decimal rating = Convert.ToDecimal(randomDouble * _random.Next(1, 10));
             rating = Math.Round(rating, 1);
             return rating.ToString();
         }

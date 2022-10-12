@@ -1,5 +1,6 @@
 ﻿using Inlämmningsuppgift;
 using SkolProjekt1;
+using System.Text;
 
 namespace PlainStorage
 {
@@ -20,39 +21,32 @@ namespace PlainStorage
 
         public void Save(List<T> obj)
         {
-            var rows = "";
+            var sb = new StringBuilder();
+            var properties = obj[0].GetType().GetProperties();
 
-            foreach (var row in File.ReadAllLines(filePath))
-            {
-                rows += row + Environment.NewLine;
-            }
-
-            if(rows == "")
-            {
-                var headers = "";
-
-                foreach (var property in obj[0].GetType().GetProperties())
-                {
-                    headers += property.Name + "#";
-                }
-
-                headers = headers.TrimEnd('#');
-
-                rows = headers + Environment.NewLine;
-            }
+            sb.Append(File.ReadAllText(filePath));
+            int count = 1;
 
             foreach (var o in obj)
             {
-                foreach(var property in o.GetType().GetProperties())
+                var row = "";
+                foreach(var property in properties)
                 {
-                    rows += property.GetValue(o) + "#";
+                    row += property.GetValue(o) + "#";
                 }
 
-                rows = rows.TrimEnd('#');
-                rows += Environment.NewLine;
+                row = row.TrimEnd('#') + Environment.NewLine;
+
+                sb.Append(row);
+
+                Console.SetCursorPosition(0, 2);
+                Console.CursorVisible = false;
+                Console.WriteLine($"Created {count++}/{obj.Count} products");
             }
 
-            File.WriteAllText(filePath, rows);
+            Console.CursorVisible = true;
+            Console.WriteLine();
+            File.WriteAllText(filePath, sb.ToString());
         }
 
         public List<T> Load()
@@ -61,12 +55,9 @@ namespace PlainStorage
             var rows = File.ReadAllLines(filePath);
             var p = new T();
             var properties = p.GetType().GetProperties();
-            var rowIndex = 0;
 
             foreach(var row in rows)
             {
-                if (rowIndex++ == 0) continue;
-
                 var product = new T();
                 var columns = row.Split('#');
                 var columnIndex = 0;

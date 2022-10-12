@@ -70,11 +70,12 @@ namespace Inlämmningsuppgift
                                             Console.WriteLine("Här är våra t-shirts:\n");
                                             Console.WriteLine($"{"Motive", alignment}{"Material",alignment}{"Size",alignment}{"Price",alignment}{"Rating",alignment}\n");
 
+                                            Console.ForegroundColor = ConsoleColor.Green;
                                             foreach (var shirt in plainStorage.Load().OrderByDescending(o => o.Rating))
                                             {
                                                 Console.WriteLine($"{shirt.Motive, alignment}{shirt.Material, alignment}{shirt.Size, alignment}{shirt.Price,alignment}{shirt.Rating,alignment}");
                                             }
-
+                                            Console.ResetColor();
                                             Console.WriteLine("");
                                         }
                                         break;

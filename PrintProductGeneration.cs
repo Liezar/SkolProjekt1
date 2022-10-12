@@ -2,7 +2,6 @@
 {
     public class PrintProductGeneration
     {
-
         int count = 1;
         public string CreatedProducts(int numberOfProducts)
         {
