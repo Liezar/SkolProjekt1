@@ -9,37 +9,37 @@ namespace Inlämmningsuppgift
         private static void Main(string[] args)
         {
             bool _mainMenuRunning = true;
+            int _saveChoice = 1;
 
             while (_mainMenuRunning)
             {
                 var menu = new Menu();
                 var RandomGenerator = new RandomGenerator();
-                var printProducts = new PrintProductGeneration();
-                int _saveChoice = 1;
 
-                switch (menu.PrintMainMenu())
+                switch (Menu.PrintMainMenu())
                 {
                     case MainMenuChoice.Shirts:
                         {
                             bool _shirtMenuRunning = true;
 
-                            var jsonStorage = new JsonStorage<Shirt>("Test.json");
-                            var plainStorage = new PlainStorage<Shirt>("ShirtsPlain.txt");
+                            var jsonStorage = new JsonStorage<Shirt>("Shirts.json");
+                            var plainStorage = new PlainStorage<Shirt>("Shirts.txt");
                             var shirts = new List<Shirt>();
                             
                             while (_shirtMenuRunning)
                             {
-                                switch (menu.PrintProductMenu())
+                                switch (Menu.PrintProductMenu())
                                 {
                                     case ProductChoice.Generate:
                                         {
-                                            Console.Write("Hur många tröjor vill du lägga till?: ");
-                                            int numberOfShirts = int.Parse(Console.ReadLine() ?? "0");
-
-                                            Random random = new Random();
-
-                                            for (int i = 0; i < numberOfShirts; i++)
+                                            int numberOfProducts = Menu.NumberOfProducts();
+                                            if (numberOfProducts == 0)
                                             {
+                                                break;
+                                            }
+
+                                            for (int i = 0; i < numberOfProducts; i++)
+                                            { 
                                                 var shirt = new Shirt
                                                 {
                                                     Motive = RandomGenerator.Motive(),
@@ -66,14 +66,25 @@ namespace Inlämmningsuppgift
                                         break;
                                     case ProductChoice.Show:
                                         {
+                                            Console.Clear();
                                             const int alignment = -13;
                                             Console.WriteLine("Här är våra t-shirts:\n");
                                             Console.WriteLine($"{"Motive", alignment}{"Material",alignment}{"Size",alignment}{"Price",alignment}{"Rating",alignment}\n");
 
                                             Console.ForegroundColor = ConsoleColor.Green;
-                                            foreach (var shirt in plainStorage.Load().OrderByDescending(o => o.Rating))
+                                            if (_saveChoice == 1)
                                             {
-                                                Console.WriteLine($"{shirt.Motive, alignment}{shirt.Material, alignment}{shirt.Size, alignment}{shirt.Price,alignment}{shirt.Rating,alignment}");
+                                                foreach (var shirt in plainStorage.Load().OrderByDescending(o => o.Rating))
+                                                {
+                                                    Console.WriteLine($"{shirt.Motive, alignment}{shirt.Material, alignment}{shirt.Size, alignment}{shirt.Price,alignment}{shirt.Rating,alignment}");
+                                                }
+                                            }
+                                            else if (_saveChoice == 2)
+                                            {
+                                                foreach (var shirt in jsonStorage.Load().OrderByDescending(o => o.Rating))
+                                                {
+                                                    Console.WriteLine($"{shirt.Motive,alignment}{shirt.Material,alignment}{shirt.Size,alignment}{shirt.Price,alignment}{shirt.Rating,alignment}");
+                                                }
                                             }
                                             Console.ResetColor();
                                             Console.WriteLine("");
@@ -95,23 +106,26 @@ namespace Inlämmningsuppgift
                             bool _mugMenuRunning = true;
 
                             var jsonStorage = new JsonStorage<Mug>("Muggar.json");
-                            var plainStorage = new PlainStorage.PlainStorage<Mug>("MuggarPlain.txt");
+                            var plainStorage = new PlainStorage<Mug>("Muggar.txt");
                             var mugs = new List<Mug>();
 
                             while (_mugMenuRunning)
                             {
-                                switch (menu.PrintProductMenu())
+                                switch (Menu.PrintProductMenu())
                                 {
                                     case ProductChoice.Generate:
                                         {
-                                            Console.Write("Hur många muggar vill du lägga till?: ");
-                                            int numberOfMugs = int.Parse(Console.ReadLine() ?? "0");
+                                            int numberOfProducts = Menu.NumberOfProducts();
+                                            if (numberOfProducts == 0)
+                                            {
+                                                break;
+                                            }
 
-                                            for (int i = 0; i < numberOfMugs; i++)
+                                            for (int i = 0; i < numberOfProducts; i++)
                                             {
                                                 var mug = new Mug
                                                 {
-                                                    Motive = SkolProjekt1.RandomGenerator.Motive(),
+                                                    Motive = RandomGenerator.Motive(),
                                                     Price = RandomGenerator.Price(),
                                                     Rating = RandomGenerator.Rating(),
                                                     Type = RandomGenerator.MugType()
@@ -133,15 +147,27 @@ namespace Inlämmningsuppgift
                                         break;
                                     case ProductChoice.Show:
                                         {
+                                            Console.Clear();
                                             const int alignment = -13;
                                             Console.WriteLine("Här är våra muggar:\n");
                                             Console.WriteLine($"{"Motive",alignment}{"Type",alignment}{"Price",alignment}{"Rating",alignment}\n");
 
-                                            foreach (var mug in plainStorage.Load().OrderBy(o => o.Rating))
+                                            Console.ForegroundColor = ConsoleColor.DarkGreen;
+                                            if (_saveChoice == 1)
                                             {
-                                                Console.WriteLine($"{mug.Motive,alignment}{mug.Type, alignment}{mug.Price,alignment}{mug.Rating,alignment}");
+                                                foreach (var mug in plainStorage.Load().OrderBy(o => o.Rating))
+                                                {
+                                                    Console.WriteLine($"{mug.Motive,alignment}{mug.Type, alignment}{mug.Price,alignment}{mug.Rating,alignment}");
+                                                }
                                             }
-
+                                            else if (_saveChoice == 2)
+                                            {
+                                                foreach (var mug in jsonStorage.Load().OrderBy(o => o.Rating))
+                                                {
+                                                    Console.WriteLine($"{mug.Motive,alignment}{mug.Type, alignment}{mug.Price,alignment}{mug.Rating,alignment}");
+                                                }
+                                            }
+                                            Console.ResetColor();
                                             Console.WriteLine("");
                                         }
                                         break;
@@ -161,7 +187,7 @@ namespace Inlämmningsuppgift
                             bool _settingsMenu = true;
                             while (_settingsMenu)
                             {
-                                switch (menu.PrintSettingsMenu())
+                                switch (Menu.PrintSettingsMenu())
                                 {
                                     case SettingChoice.Plain:
                                         {
