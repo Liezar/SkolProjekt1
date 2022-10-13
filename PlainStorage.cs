@@ -7,7 +7,6 @@ namespace PlainStorage
     public class PlainStorage<T> where T : class, new()
     {
         private readonly string filePath;
-        private PrintProductGeneration PrintProductGeneration = new();
         public PlainStorage(string fileName)
         {
             filePath = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.UserProfile) + "/" + fileName);
@@ -43,6 +42,8 @@ namespace PlainStorage
                 Console.CursorVisible = false;
                 Console.WriteLine($"Created {count++}/{obj.Count} products");
             }
+
+            obj.Clear();
 
             Console.CursorVisible = true;
             Console.WriteLine();

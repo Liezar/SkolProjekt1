@@ -2,6 +2,7 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Net.Http.Headers;
 using System.Text;
 using System.Threading.Tasks;
 
@@ -9,9 +10,8 @@ namespace SkolProjekt1
 {
     public class RandomGenerator
     {
-        private static Random _random = new Random();
+        private static readonly Random _random = new Random();
 
-        private static string[]? _items;
         private static string[]? _motives;
         private static string[]? _materials;
         private static string[]? _sizes ;
@@ -96,10 +96,8 @@ namespace SkolProjekt1
 
         public static string Rating()
         {
-            double randomDouble = _random.NextDouble();
-            decimal rating = Convert.ToDecimal(randomDouble * _random.Next(1, 10));
-            rating = Math.Round(rating, 1);
-            return rating.ToString();
+            decimal tal = (decimal)_random.Next(0, 100) / 10;
+            return tal.ToString();
         }
     }
 }
