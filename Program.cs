@@ -1,6 +1,5 @@
-﻿using System.Text.Json;
+﻿using PlainStorage;
 using SkolProjekt1;
-using PlainStorage;
 
 namespace Inlämmningsuppgift
 {
@@ -22,10 +21,10 @@ namespace Inlämmningsuppgift
                         {
                             bool _shirtMenuRunning = true;
 
-                            var jsonStorage = new JsonStorage<Shirt>("Shirts.json");
-                            var plainStorage = new PlainStorage<Shirt>("Shirts.txt");
+                            var jsonStorage = new JsonStorage<Shirt>("/Shirts.json");
+                            var plainStorage = new PlainStorage<Shirt>("/Shirts.txt");
                             var shirts = new List<Shirt>();
-                            
+
                             while (_shirtMenuRunning)
                             {
                                 switch (Menu.PrintProductMenu())
@@ -39,10 +38,10 @@ namespace Inlämmningsuppgift
                                             }
 
                                             for (int i = 0; i < numberOfProducts; i++)
-                                            { 
+                                            {
                                                 var shirt = new Shirt
                                                 {
-                                                    Motive = RandomGenerator.Motive(),
+                                                    Motif = RandomGenerator.Motive(),
                                                     Material = RandomGenerator.Material(),
                                                     Size = RandomGenerator.Size(),
                                                     Price = RandomGenerator.Price(),
@@ -55,12 +54,12 @@ namespace Inlämmningsuppgift
                                             if (_saveChoice == 1)
                                             {
                                                 plainStorage.Save(shirts);
-                                                Console.WriteLine("Sparat i Plain");
+                                                Console.WriteLine("Saved in Plain");
                                             }
                                             else if (_saveChoice == 2)
                                             {
                                                 jsonStorage.Save(shirts);
-                                                Console.WriteLine("Sparat i Json");
+                                                Console.WriteLine("Saved in Json");
                                             }
                                         }
                                         break;
@@ -68,22 +67,22 @@ namespace Inlämmningsuppgift
                                         {
                                             Console.Clear();
                                             const int alignment = -13;
-                                            Console.WriteLine("Här är våra t-shirts:\n");
-                                            Console.WriteLine($"{"Motive", alignment}{"Material",alignment}{"Size",alignment}{"Price",alignment}{"Rating",alignment}\n");
+                                            Console.WriteLine("Here is our assortment of T-shirts:\n");
+                                            Console.WriteLine($"{"Motif",alignment}{"Material",alignment}{"Size",alignment}{"Price",alignment}{"Rating",alignment}\n");
 
                                             Console.ForegroundColor = ConsoleColor.Green;
                                             if (_saveChoice == 1)
                                             {
                                                 foreach (var shirt in plainStorage.Load().OrderByDescending(o => o.Rating))
                                                 {
-                                                    Console.WriteLine($"{shirt.Motive, alignment}{shirt.Material, alignment}{shirt.Size, alignment}{shirt.Price,alignment}{shirt.Rating,alignment}");
+                                                    Console.WriteLine($"{shirt.Motif,alignment}{shirt.Material,alignment}{shirt.Size,alignment}{shirt.Price,alignment}{shirt.Rating,alignment}");
                                                 }
                                             }
                                             else if (_saveChoice == 2)
                                             {
                                                 foreach (var shirt in jsonStorage.Load().OrderByDescending(o => o.Rating))
                                                 {
-                                                    Console.WriteLine($"{shirt.Motive,alignment}{shirt.Material,alignment}{shirt.Size,alignment}{shirt.Price,alignment}{shirt.Rating,alignment}");
+                                                    Console.WriteLine($"{shirt.Motif,alignment}{shirt.Material,alignment}{shirt.Size,alignment}{shirt.Price,alignment}{shirt.Rating,alignment}");
                                                 }
                                             }
                                             Console.ResetColor();
@@ -105,8 +104,8 @@ namespace Inlämmningsuppgift
                         {
                             bool _mugMenuRunning = true;
 
-                            var jsonStorage = new JsonStorage<Mug>("Muggar.json");
-                            var plainStorage = new PlainStorage<Mug>("Muggar.txt");
+                            var jsonStorage = new JsonStorage<Mug>("/Mugs.json");
+                            var plainStorage = new PlainStorage<Mug>("/Mugs.txt");
                             var mugs = new List<Mug>();
 
                             while (_mugMenuRunning)
@@ -136,12 +135,12 @@ namespace Inlämmningsuppgift
                                             if (_saveChoice == 1)
                                             {
                                                 plainStorage.Save(mugs);
-                                                Console.WriteLine("Sparat i Plain");
+                                                Console.WriteLine("Saved in Plain");
                                             }
                                             else if (_saveChoice == 2)
                                             {
                                                 jsonStorage.Save(mugs);
-                                                Console.WriteLine("Sparat i Json");
+                                                Console.WriteLine("Saved in Json");
                                             }
                                         }
                                         break;
@@ -149,22 +148,22 @@ namespace Inlämmningsuppgift
                                         {
                                             Console.Clear();
                                             const int alignment = -13;
-                                            Console.WriteLine("Här är våra muggar:\n");
-                                            Console.WriteLine($"{"Motive",alignment}{"Type",alignment}{"Price",alignment}{"Rating",alignment}\n");
+                                            Console.WriteLine("Here is our assortment of mugs:\n");
+                                            Console.WriteLine($"{"Motif",alignment}{"Type",alignment}{"Price",alignment}{"Rating",alignment}\n");
 
                                             Console.ForegroundColor = ConsoleColor.DarkGreen;
                                             if (_saveChoice == 1)
                                             {
                                                 foreach (var mug in plainStorage.Load().OrderBy(o => o.Rating))
                                                 {
-                                                    Console.WriteLine($"{mug.Motive,alignment}{mug.Type, alignment}{mug.Price,alignment}{mug.Rating,alignment}");
+                                                    Console.WriteLine($"{mug.Motive,alignment}{mug.Type,alignment}{mug.Price,alignment}{mug.Rating,alignment}");
                                                 }
                                             }
                                             else if (_saveChoice == 2)
                                             {
                                                 foreach (var mug in jsonStorage.Load().OrderBy(o => o.Rating))
                                                 {
-                                                    Console.WriteLine($"{mug.Motive,alignment}{mug.Type, alignment}{mug.Price,alignment}{mug.Rating,alignment}");
+                                                    Console.WriteLine($"{mug.Motive,alignment}{mug.Type,alignment}{mug.Price,alignment}{mug.Rating,alignment}");
                                                 }
                                             }
                                             Console.ResetColor();

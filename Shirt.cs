@@ -2,7 +2,7 @@
 {
     public class Shirt
     {
-        public string Motive { get; set; } = "";
+        public string Motif { get; set; } = "";
         public string Size { get; set; } = "";
         public string Material { get; set; } = "";
         public string Rating { get; set; } = "";

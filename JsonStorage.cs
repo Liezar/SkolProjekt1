@@ -1,35 +1,27 @@
-﻿using Inlämmningsuppgift;
-using System;
-using System.Security.AccessControl;
-using System.Text.Json;
+﻿using System.Text.Json;
 
 namespace SkolProjekt1
 {
     public class JsonStorage<T> where T : class
     {
-        private readonly string filePath;
+        private readonly string _filePath;
 
         public JsonStorage(string fileName)
         {
-            filePath = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.UserProfile) + "/" + fileName);
-
-            if (!File.Exists(filePath))
-            {
-                var fileStream = File.Create(filePath);
-                fileStream.Close();
-            }
+            var file = new CreateFile();
+            _filePath = file.Create(fileName);
         }
 
         int count = 1;
 
-        public void Save(List<T> obj) 
+        public void Save(List<T> obj)
         {
             var objects = Load();
             objects.AddRange(obj);
             string json = JsonSerializer.Serialize(objects, new JsonSerializerOptions { WriteIndented = true });
-            File.WriteAllText(filePath, json);
+            File.WriteAllText(_filePath, json);
 
-            foreach (var item in obj)
+            for (int i = 0; i < obj.Count; i++)
             {
                 Console.SetCursorPosition(0, 2);
                 Console.CursorVisible = false;
@@ -46,12 +38,12 @@ namespace SkolProjekt1
         {
             string dataFile = "";
 
-            if (File.Exists(filePath))
+            if (File.Exists(_filePath))
             {
-                dataFile = File.ReadAllText(filePath);
+                dataFile = File.ReadAllText(_filePath);
             }
 
-            if (dataFile == "" || !File.Exists(filePath))
+            if (dataFile == "" || !File.Exists(_filePath))
             {
                 return new List<T>();
             }

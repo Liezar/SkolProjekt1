@@ -1,21 +1,15 @@
-﻿using Inlämmningsuppgift;
-using SkolProjekt1;
+﻿using SkolProjekt1;
 using System.Text;
 
 namespace PlainStorage
 {
     public class PlainStorage<T> where T : class, new()
     {
-        private readonly string filePath;
+        private readonly string _filePath;
         public PlainStorage(string fileName)
         {
-            filePath = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.UserProfile) + "/" + fileName);
-
-            if (!File.Exists(filePath))
-            {
-                var fileStream = File.Create(filePath);
-                fileStream.Close();
-            }
+            var file = new CreateFile();
+            _filePath = file.Create(fileName);
         }
 
         public void Save(List<T> obj)
@@ -23,13 +17,13 @@ namespace PlainStorage
             var sb = new StringBuilder();
             var properties = obj[0].GetType().GetProperties();
 
-            sb.Append(File.ReadAllText(filePath));
+            sb.Append(File.ReadAllText(_filePath));
             int count = 1;
 
             foreach (var o in obj)
             {
                 var row = "";
-                foreach(var property in properties)
+                foreach (var property in properties)
                 {
                     row += property.GetValue(o) + "#";
                 }
@@ -47,17 +41,17 @@ namespace PlainStorage
 
             Console.CursorVisible = true;
             Console.WriteLine();
-            File.WriteAllText(filePath, sb.ToString());
+            File.WriteAllText(_filePath, sb.ToString());
         }
 
         public List<T> Load()
         {
             var products = new List<T>();
-            var rows = File.ReadAllLines(filePath);
+            var rows = File.ReadAllLines(_filePath);
             var p = new T();
             var properties = p.GetType().GetProperties();
 
-            foreach(var row in rows)
+            foreach (var row in rows)
             {
                 var product = new T();
                 var columns = row.Split('#');
