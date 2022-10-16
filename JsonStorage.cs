@@ -12,10 +12,10 @@ namespace SkolProjekt1
             _filePath = file.Create(fileName);
         }
 
-        int count = 1;
 
         public void Save(List<T> obj)
         {
+            int count = 1;
             var objects = Load();
             objects.AddRange(obj);
             string json = JsonSerializer.Serialize(objects, new JsonSerializerOptions { WriteIndented = true });

@@ -1,12 +1,12 @@
 ﻿using SkolProjekt1;
 using System.Text;
 
-namespace PlainStorage
+namespace CSV
 {
-    public class PlainStorage<T> where T : class, new()
+    public class CsvStorage<T> where T : class, new()
     {
         private readonly string _filePath;
-        public PlainStorage(string fileName)
+        public CsvStorage(string fileName)
         {
             var file = new CreateFile();
             _filePath = file.Create(fileName);
