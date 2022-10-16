@@ -4,7 +4,6 @@
     {
         public string Create(string fileName)
         {
-            //Skapar en ny katalog om det inte finns och skapar filer som anges i parametern 
             var dirPath = Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments) + "/EdvinsProject/ProductData";
             var filePath = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments) + "/EdvinsProject" + fileName);
 
