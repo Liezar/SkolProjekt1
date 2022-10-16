@@ -1,6 +1,4 @@
-﻿using SkolProjekt1;
-
-namespace Inlämmningsuppgift
+﻿namespace Inlämmningsuppgift
 {
     public enum MainMenuChoice
     {
@@ -38,13 +36,13 @@ namespace Inlämmningsuppgift
             Console.WriteLine("3: Settings");
             Console.WriteLine("4: Exit");
 
-            if (!int.TryParse(Console.ReadLine(), out int mainMenuChoice))
+            if (!int.TryParse(Console.ReadLine(), out int _mainMenuChoice))
             {
                 Console.WriteLine("Endast siffror!");
             }
 
             Console.Clear();
-            return (MainMenuChoice)mainMenuChoice;
+            return (MainMenuChoice)_mainMenuChoice;
         }
 
         public static SettingChoice PrintSettingsMenu()
@@ -54,10 +52,10 @@ namespace Inlämmningsuppgift
             Console.WriteLine("2: Json");
             Console.WriteLine("3: Exit");
 
-            if (!int.TryParse(Console.ReadLine(), out int settingMenuChoice))
+            if (!int.TryParse(Console.ReadLine(), out int _settingMenuChoice))
 
             Console.Clear();
-            return (SettingChoice)settingMenuChoice;
+            return (SettingChoice)_settingMenuChoice;
         }
 
         public static ProductChoice PrintProductMenu()
@@ -66,31 +64,31 @@ namespace Inlämmningsuppgift
             Console.WriteLine("2: Show products");
             Console.WriteLine("3: Exit");
 
-            if (!int.TryParse(Console.ReadLine(), out int prodcutMenuChoice))
+            if (!int.TryParse(Console.ReadLine(), out int _prodcutMenuChoice))
 
             Console.Clear();
-            return (ProductChoice)prodcutMenuChoice;
+            return (ProductChoice)_prodcutMenuChoice;
         }
         public static int NumberOfProducts()
         {
             Console.Clear();
             Console.Write("Hur många produkter vill du skapa?: ");
 
-            if (!int.TryParse(Console.ReadLine(), out int numberOfProducts))
+            if (!int.TryParse(Console.ReadLine(), out int _numberOfProducts))
             {
                 Console.ForegroundColor = ConsoleColor.Red;
                 Console.WriteLine("Endast siffror!");
                 Console.ResetColor();
                 return 0;
             }
-            else if (numberOfProducts <= 0)
+            else if (_numberOfProducts <= 0)
             {
                 Console.ForegroundColor = ConsoleColor.Red;
                 Console.WriteLine("Du måste generera en eller mer produkter");
                 Console.ResetColor();
                 return 0;
             }
-            return numberOfProducts;
+            return _numberOfProducts;
         }
     }
 }
